@@ -1,6 +1,6 @@
 # Roadmap
 
-What's planned beyond 0.7.x, in rough order. How Trovul will be sold (Microsoft Store, 15-day trial, US$ 39 / R$ 59,90) is planned in [VENDA.md](VENDA.md) and comes last, after more work on the app.
+What's planned beyond 0.7.x, in rough order.
 
 ## Next
 
@@ -24,7 +24,6 @@ Ctrl+Alt+1…9 apply scenes, and a small pop-up says which one. Scenes are alrea
 
 ## Later
 
-- **Selling on the Microsoft Store.** Paid MSIX app with the Store's 15-day trial, US$ 39 / R$ 59,90; a PC linked to a licensed one works as a guest. Plan, costs and paperwork in [VENDA.md](VENDA.md); after more work on the app.
 - **Shared microphone.** Use the gaming PC's microphone on the streaming PC. Needs a virtual audio device (a signed driver).
 - **The other PC's screen in a window.** Already in the feature registry as "Screen".
 - **Three or more PCs, and Mac.**
