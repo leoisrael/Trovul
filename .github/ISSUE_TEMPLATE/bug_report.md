@@ -27,4 +27,6 @@ What you expected to happen.
 What actually happened.
 
 ## Logs / Screenshots
-If applicable, add logs from the developer console or screenshots.
+If applicable, add sanitized logs or screenshots. Do **not** include pairing
+tokens, clipboard contents, personal information, or file names you do not want
+to make public.

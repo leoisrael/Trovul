@@ -1,216 +1,219 @@
 <p align="center">
-  <h1 align="center">🔊 Trovul</h1>
-  <p align="center"><strong>One desk, two PCs.</strong></p>
-  <p align="center"><em>Real-time audio streaming between PCs. Zero cables. Zero extra hardware.</em></p>
+  <img src="src-tauri/icons/app-icon.svg" width="96" alt="Trovul logo">
+</p>
+
+<h1 align="center">Trovul</h1>
+
+<p align="center">
+  <strong>Two PCs. One desk.</strong><br>
+  Hear both machines in one headset, mix every app, and use one keyboard and mouse across every screen.
 </p>
 
 <p align="center">
-  <a href="#license-and-contributions"><img src="https://img.shields.io/badge/Source-source--available-8b5cf6?style=for-the-badge" alt="Source available"></a>
-  <img src="https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows" alt="Windows">
+  <a href="https://github.com/leoisrael/Trovul/releases">Download builds</a> ·
+  <a href="https://trovul.com">Website</a> ·
+  <a href="#build-from-source">Build from source</a> ·
+  <a href="CONTRIBUTING.md">Contribute</a>
+</p>
+
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/source-source--available-8b5cf6?style=for-the-badge" alt="Source available"></a>
+  <img src="https://img.shields.io/badge/platform-Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white" alt="Windows">
   <img src="https://img.shields.io/badge/Rust-000000?style=for-the-badge&logo=rust&logoColor=white" alt="Rust">
-  <img src="https://img.shields.io/badge/Tauri_v2-24C8D8?style=for-the-badge&logo=tauri&logoColor=white" alt="Tauri">
-  <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React">
+  <img src="https://img.shields.io/badge/Tauri-v2-24C8D8?style=for-the-badge&logo=tauri&logoColor=white" alt="Tauri v2">
+  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React">
 </p>
 
 <p align="center">
-  <a href="https://github.com/leoisrael/Trovul/stargazers"><img src="https://img.shields.io/github/stars/leoisrael/Trovul?style=social" alt="Stars"></a>
-  <a href="https://github.com/leoisrael/Trovul/network/members"><img src="https://img.shields.io/github/forks/leoisrael/Trovul?style=social" alt="Forks"></a>
-  <a href="https://github.com/leoisrael/Trovul/issues"><img src="https://img.shields.io/github/issues/leoisrael/Trovul" alt="Issues"></a>
+  <a href="https://github.com/leoisrael/Trovul/stargazers"><img src="https://img.shields.io/github/stars/leoisrael/Trovul?style=social" alt="GitHub stars"></a>
+  <a href="https://github.com/leoisrael/Trovul/issues"><img src="https://img.shields.io/github/issues/leoisrael/Trovul" alt="Open issues"></a>
+  <a href="https://github.com/leoisrael/Trovul/releases"><img src="https://img.shields.io/github/v/release/leoisrael/Trovul?display_name=tag&sort=semver" alt="Latest release"></a>
 </p>
 
----
-
-> **Source-available, not Open Source.** Trovul welcomes fixes and
-> contributions, but its code may not be used to provide a competing product.
-> See [LICENSE](LICENSE), [TRADEMARKS.md](TRADEMARKS.md), and
-> [CONTRIBUTOR-LICENSE-AGREEMENT.md](CONTRIBUTOR-LICENSE-AGREEMENT.md) before
-> using or contributing to the project.
-
-> **Replace your $500 audio mixer with a single install.**  
-> Stream system audio between PCs over your local network with low, self-tuning latency. No cables, no extra hardware, no complex setup.
+> **Source-available, not Open Source.** Trovul welcomes contributions and
+> permitted forks, but its code may not be used to provide a competing product.
+> Read the [license](LICENSE), [brand policy](TRADEMARKS.md), and
+> [contributor agreement](CONTRIBUTOR-LICENSE-AGREEMENT.md) before using or
+> contributing to the project.
 
 ---
 
-![Trovul Overview — two PCs linked, playing the other PC's audio](docs/screenshots/home-receiving.png)
+## The dual-PC setup, without the pile of hardware
 
-## ✨ Features
+Gaming PC plus streaming PC. Work laptop plus desktop. Two machines are useful,
+but the desk usually ends up with a second headset, an audio interface, a USB
+switch, cables, and three different utilities that barely know about each
+other.
 
-| | Feature | Description |
+Trovul turns the two PCs into one workspace over your local network. Pair once,
+then decide where sound goes, control every app, and move naturally between
+screens.
+
+<p align="center">
+  <img src="docs/screenshots/home-receiving.png" alt="Trovul receiving audio from another PC" width="820">
+</p>
+
+## What you get
+
+| Hear | Mix | Control |
 |---|---|---|
-| 🎧 | **One-Click Direction** | "Hear the other PC here" or "send this PC's audio" — one click configures both PCs |
-| 🔄 | **Set and Forget** | Pair once; Trovul starts with Windows, reconnects after reboots, sleep or Wi-Fi drops, and brings the audio back |
-| 🔊 | **Audio Streaming** | Real-time system audio between PCs on the LAN, any speaker layout (stereo … 7.1) |
-| 🔍 | **Auto-Discovery** | PCs find each other automatically — or connect by IP address. Give each PC a friendly name |
-| 🛡️ | **Works Out of the Box** | The installer sets up Windows Firewall, and Trovul tells you when Windows marks your network as Public |
-| 🎚️ | **Mixer** | Laid out like an audio interface: dials with LED level rings and mute for the master, the other PC's return and every app — on both PCs |
-| 🎬 | **Scenes** | Save a mix of both PCs ("Game", "Stream", "Meeting") and switch to it in one click — even from the tray |
-| 🎛️ | **Stream Deck** | Keys for scenes, direction, mute and follow-the-pointer; volume dials on Stream Deck + — for both PCs |
-| 🔀 | **Output per App** | Send each app to its own device (Discord to the headset, the game to the speakers), on either PC |
-| 🖱️ | **Keyboard & Mouse Sharing** | One mouse and keyboard for both PCs — draw your real desk (even the other PC's screen *between* two of yours) and the pointer follows it |
-| 📋 | **Shared Clipboard** | Copy text or a screenshot on one PC, paste it on the other — content password-manager apps mark as private stays put |
-| ⬆️ | **Updates Over the Link** | Update one PC and the other is invited to take the same version from it — signed with the pairing, no download |
-| 🗣️ | **Voice-Chat Ducking** | The other PC's audio lowers by itself while someone talks on Discord, Teams or Zoom, then fades back |
-| ⌨️ | **Global Shortcuts** | Ctrl+Alt+M mutes the other PC, Ctrl+Alt+T turns audio on/off — even inside games |
-| 🟢 | **Tray Mixer** | Click the tray icon for a pop-up mixer: direction, master and the other PC as dials, every app with its level — plus a status dot on the icon |
-| 🔔 | **Test Sound** | Sends a chime through the whole pipeline to confirm the setup in a second |
-| ⏱️ | **Latency Modes** | Low / Balanced / Stable, with an adaptive jitter buffer inside each mode |
-| 📊 | **Live Diagnostics** | Connection quality, delay, packet loss, clock drift and bitrate |
-| 🔒 | **Paired Connections** | Only a PC you approved can control this PC or stream audio to it |
-| 🎧 | **Universal Devices** | Bluetooth, USB, analog — pick the output for the other PC's audio |
-| 📱 | **Companion API** | Opt-in, token-protected WebSocket API for external controllers |
+| Send either PC's system audio to the other with one click. | Mix master, return audio, and individual apps on both machines. | Move the pointer across your real desk layout; the keyboard follows. |
+| Low, Balanced, and Stable latency modes with an adaptive jitter buffer. | Route an app to a specific output device and save complete scenes. | Share clipboard text, screenshots, and files between paired PCs. |
+| Works with USB, Bluetooth, analog, stereo, and surround devices. | Use tray controls, global shortcuts, Stream Deck, and an opt-in Companion API. | Keep working through reconnects, sleep, device changes, and Wi-Fi drops. |
 
-| Mixer | Home |
+### Built for the moments that make two PCs worth having
+
+- **Streamers:** game on one PC, capture on another, and hear the whole setup in one headset.
+- **Gamers:** stop swapping headsets or cables just to use a second machine.
+- **Creators:** keep Discord, editing, music, and capture exactly where they belong.
+- **Power users:** make a laptop and a desktop feel like one desk, not two isolated islands.
+
+## See the workspace
+
+| Mixer | Keyboard & mouse |
 |---|---|
-| ![Mixer](docs/screenshots/mixer.png) | ![Home](docs/screenshots/home-receiving.png) |
-| **Keyboard & Mouse** | **Connect a PC** |
-| ![Keyboard & Mouse](docs/screenshots/keyboard-mouse.png) | ![Connect](docs/screenshots/home-connect.png) |
-| **Tray mixer** | **Settings** |
-| ![Tray mixer](docs/screenshots/tray-mixer.png) | ![Settings](docs/screenshots/settings.png) |
+| ![Trovul mixer showing controls for both PCs](docs/screenshots/mixer.png) | ![Trovul screen arrangement editor](docs/screenshots/keyboard-mouse.png) |
 
-## 🚀 Quick Start
+| Tray mixer | Connection settings |
+|---|---|
+| ![Trovul tray mixer](docs/screenshots/tray-mixer.png) | ![Trovul connection settings](docs/screenshots/settings.png) |
 
-### Prerequisites
+## How it works
 
-- [Node.js](https://nodejs.org/) 20.19+ (required by Vite 7)
-- [Rust](https://www.rust-lang.org/tools/install) (latest stable)
-- [Tauri v2 prerequisites](https://v2.tauri.app/start/prerequisites/)
+```mermaid
+flowchart LR
+  subgraph A[PC A]
+    AA[System audio] --> AC[Trovul]
+    AK[Keyboard & mouse] --> AC
+  end
+  subgraph L[Your local network]
+    D[Discovery and paired control]
+    S[Low-latency audio stream]
+  end
+  subgraph B[PC B]
+    BC[Trovul] --> BA[Headset / speakers]
+    BC --> BK[Displays and apps]
+  end
+  AC <-->|paired control| D
+  AC -->|audio| S --> BC
+  AC <-->|clipboard and input| BC
+```
 
-### Build & Run
+1. Both PCs find each other on the same local network.
+2. You approve the pairing once.
+3. Trovul keeps a control link alive and moves the audio, input, clipboard, and
+   mixer state you choose to share.
 
-```bash
-# Clone the repository
+The detailed technical map lives in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+## Feature set
+
+<details>
+<summary><strong>Audio and mixer</strong></summary>
+
+- One-click **Hear here**, **Send there**, and **Off** direction controls.
+- Real-time system audio streaming from stereo to 7.1.
+- Per-app volume, mute, peaks, app icons, and output-device routing.
+- Mixer scenes for game, stream, meeting, or any other setup.
+- Voice-chat ducking, focus-following mix, test sound, and live diagnostics.
+- Automatic device recovery and selectable Low / Balanced / Stable latency.
+</details>
+
+<details>
+<summary><strong>One desk experience</strong></summary>
+
+- Keyboard and mouse sharing with a drawn multi-monitor arrangement.
+- Shared text, image, and file clipboard.
+- Global hotkeys and a fast tray mixer.
+- Stream Deck actions for scenes, direction, mute, focus mix, and volume.
+</details>
+
+<details>
+<summary><strong>Built to stay out of the way</strong></summary>
+
+- Local discovery, explicit pairing, and reconnect after sleep or network loss.
+- Private- and domain-network firewall rules installed with the Windows MSI.
+- Start with Windows, connection diagnostics, and an activity log.
+- Opt-in, token-protected Companion API for local controllers.
+</details>
+
+## Get started
+
+### Use a build
+
+Historical installers and test builds are available on the
+[Releases page](https://github.com/leoisrael/Trovul/releases). Install the same
+build on both Windows PCs, keep them on the same trusted local network, and
+approve the pairing from either machine.
+
+### Build from source
+
+Trovul currently targets **Windows 10/11**. You will need:
+
+- [Node.js](https://nodejs.org/) 20.19 or newer;
+- current stable [Rust](https://www.rust-lang.org/tools/install);
+- [Tauri v2 prerequisites](https://v2.tauri.app/start/prerequisites/).
+
+```powershell
 git clone https://github.com/leoisrael/Trovul.git
 cd Trovul
-
-# Install dependencies
-npm install
-
-# Run in development mode
+npm ci
 npm run tauri dev
+```
 
-# Build for production
+To build an installer:
+
+```powershell
 npm run tauri build
 ```
 
-**Designing the UI without two PCs:** `npm run dev`, then open `http://localhost:1420/dev/preview.html?state=receiving#/home` (states: `firstrun`, `disconnected`, `public`, `reconnecting`, `receiving`, `sending`, `idle`; routes: `#/home`, `#/audio` (the mixer), `#/input`, `#/settings`). It runs the real UI against a fake backend (`dev/mock-tauri.ts`).
+For UI work without a second PC, run `npm run dev` and open the built-in preview
+with a state such as:
 
-The installer will be generated in `src-tauri/target/release/bundle/`.
-
-## 🏗️ Architecture
-
-```mermaid
-graph LR
-    subgraph PC1 [Sender PC]
-        A[System Audio] -->|WASAPI Capture| B[Trovul Core]
-    end
-
-    B -->|UDP · PCM16 stereo<br/>~200 pkt/s, under 1 KB each| C[Local Network]
-
-    subgraph PC2 [Host PC]
-        C -->|UDP Receive| D[Trovul Core]
-        D -->|cpal Playback| E[Speakers / Headset]
-    end
-
-    F[Auto-Discovery<br/>UDP Broadcast] -.->|Find Peers| B
-    F -.-> D
-
-    style PC1 fill:#1a1a2e,stroke:#e94560,color:#fff
-    style PC2 fill:#1a1a2e,stroke:#0f3460,color:#fff
+```text
+http://localhost:1420/dev/preview.html?state=receiving#/home
 ```
 
-**Connection flow:** Peers discover each other via UDP broadcast → the user approves the pairing once → a persistent TCP control link (heartbeat, remote mixer) connects the two PCs → audio streams over UDP and is accepted only from the paired PC.
+See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) for commands, preview states,
+and test expectations.
 
-## ⚡ Performance
+## Project status
 
-| Metric | Value |
-|---|---|
-| **Receive buffer** | Adaptive jitter buffer: starts at 50 ms, 30–250 ms depending on the network |
-| **Bandwidth** | ~1.6 Mbit/s per stream (48 kHz stereo, 16-bit PCM) |
-| **CPU Usage** | < 2% sender · < 3% receiver |
-| **Packet Rate** | ~200 packets/sec (5 ms each, under 1 KB — no IP fragmentation) |
-| **Bundle Size** | ~5 MB installer |
+Trovul is usable today on trusted Windows LANs. The big next steps are drag and
+drop between PCs, a phone mixer, screen sharing, cross-platform support, and
+end-to-end encryption. Follow the [roadmap](docs/ROADMAP.md) for the current
+direction.
 
-## 🛠️ Tech Stack
+## Security and privacy
 
-| Layer | Technology | Why |
-|---|---|---|
-| **Core Engine** | Rust | Native performance, memory safety, zero-cost abstractions |
-| **Audio Capture** | WASAPI | Direct hardware access on Windows, loopback capture |
-| **Audio Playback** | cpal | Cross-platform audio abstraction |
-| **Networking** | UDP + TCP | UDP for low-latency audio, TCP for control messages |
-| **UI Framework** | React + TypeScript | Fast development, rich ecosystem |
-| **Desktop Runtime** | Tauri v2 | Tiny bundles, native performance, cross-platform |
+Trovul is designed for PCs you control on a trusted local network. Do not expose
+its network services directly to the internet. Please read [SECURITY.md](SECURITY.md)
+before reporting a vulnerability or using sensitive features on a shared network.
 
-## 🗺️ Roadmap
+## Help build it
 
-Details and what comes next: [docs/ROADMAP.md](docs/ROADMAP.md).
+Great first contributions include reproducible bug reports, device-compatibility
+testing, Windows accessibility improvements, documentation, and focused fixes.
 
-- [x] Real-time audio streaming (sender ↔ host)
-- [x] Auto-discovery via UDP broadcast
-- [x] Universal device support (Bluetooth, USB, analog)
-- [x] Real-time diagnostics panel
-- [x] Per-app volume control (local + remote)
-- [x] System tray with quick controls
-- [x] Companion WebSocket API
-- [x] Global hotkeys
-- [x] One-click audio direction, pairing and automatic reconnect
-- [x] Voice-chat ducking
-- [x] Keyboard & mouse sharing with a drawn screen arrangement
-- [x] Shared clipboard (text, images and files)
-- [ ] Screen sharing and remote control
-- [x] Firewall setup in the installer, Public-network warning
-- [ ] Code-signed installer and auto-update
-- [x] Mixer with dials, meters and an output device per app
-- [x] Choose which apps to stream, with their own levels (Windows 11)
-- [x] Follow the pointer (the PC you're using is louder)
-- [x] Stream Deck plugin
-- [ ] Drag files between the PCs
-- [ ] Mixer on the phone
-- [ ] Opus codec compression
-- [ ] WAN support (streaming over the internet)
-- [ ] macOS and Linux support
-- [ ] End-to-end encryption
+- [Contribution guide](CONTRIBUTING.md)
+- [Support guide](SUPPORT.md)
+- [Security policy](SECURITY.md)
+- [Release smoke test](docs/QA-CHECKLIST.md)
+- [Open an issue](https://github.com/leoisrael/Trovul/issues)
 
-## 🎯 Use Cases
+## License, brand, and assets
 
-| Audience | Problem Solved |
-|---|---|
-| **Gamers** | Dual-PC streaming setup without $500+ in audio hardware and cables |
-| **Streamers** | Professional audio routing — game on PC1, OBS on PC2, audio flows seamlessly |
-| **Podcasters** | Multiple hosts, multiple machines, one unified audio stream |
-| **Corporate** | Call centers, trading floors — unified audio across workstations |
-| **Education** | Teacher demos heard by all students in real-time |
-| **Tech Support** | Hear exactly what the client hears to diagnose audio issues |
+The code is available under the **PolyForm Shield License 1.0.0**. You may use,
+study, modify, and share it under that license, but may not use it to provide a
+competing product. The Trovul name, logo, product imagery, and visual identity
+are not granted by the code license.
 
-## 🤝 Contributing
-
-We welcome contributions that improve Trovul for its users. Please read
-[CONTRIBUTING.md](CONTRIBUTING.md) and accept the
-[Contributor License Agreement](CONTRIBUTOR-LICENSE-AGREEMENT.md) before
-opening a pull request.
-
-**Quick overview:**
-
-1. Fork the repo
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License and contributions
-
-Trovul is source-available under the **PolyForm Shield License 1.0.0**. You
-may study, use, modify, and share the code subject to that license, but you may
-not use it to provide a product that competes with Trovul. The name, logos, and
-other brand assets are not licensed for independent use; see
-[TRADEMARKS.md](TRADEMARKS.md) and [ASSETS-LICENSE.md](ASSETS-LICENSE.md).
-
----
+- [License](LICENSE)
+- [Trademark and brand policy](TRADEMARKS.md)
+- [Brand and media assets](ASSETS-LICENSE.md)
+- [Contributor License Agreement](CONTRIBUTOR-LICENSE-AGREEMENT.md)
 
 <p align="center">
-  <strong>Trovul</strong>
-  <br>
-  <em>"Because audio shouldn't need cables."</em>
-  <br><br>
-  <a href="https://trovul.com">Website</a> · <a href="https://github.com/leoisrael/Trovul/issues">Report Bug</a> · <a href="https://github.com/leoisrael/Trovul/issues">Request Feature</a>
+  <strong>One desk. Two PCs. No extra hardware.</strong><br>
+  Built with Rust, Tauri, React, and a stubborn dislike of cable clutter.
 </p>
