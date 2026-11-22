@@ -1,0 +1,127 @@
+{
+  "$schema": "https://schemas.elgato.com/streamdeck/plugins/manifest.json",
+  "Name": "Trovul",
+  "Version": "0.1.0.0",
+  "Author": "Trovul",
+  "Description": "Control Trovul from your Stream Deck: apply scenes, choose where the sound goes, mute and turn the volume of either PC, follow the pointer.",
+  "UUID": "com.trovul.streamdeck",
+  "URL": "https://trovul.com",
+  "Icon": "imgs/plugin",
+  "Category": "Trovul",
+  "CategoryIcon": "imgs/category",
+  "CodePath": "bin/plugin.js",
+  "SDKVersion": 3,
+  "Software": {
+    "MinimumVersion": "7.1"
+  },
+  "OS": [
+    {
+      "Platform": "windows",
+      "MinimumVersion": "10"
+    }
+  ],
+  "Nodejs": {
+    "Version": "24"
+  },
+  "PropertyInspectorPath": "ui/settings.html",
+  "Actions": [
+    {
+      "Name": "Scene",
+      "UUID": "com.trovul.streamdeck.scene",
+      "Icon": "imgs/actions/scene",
+      "Tooltip": "Put a saved Trovul mix back on both PCs",
+      "Controllers": [
+        "Keypad"
+      ],
+      "States": [
+        {
+          "Image": "imgs/keys/scene",
+          "TitleAlignment": "bottom"
+        }
+      ]
+    },
+    {
+      "Name": "Where the sound goes",
+      "UUID": "com.trovul.streamdeck.direction",
+      "Icon": "imgs/actions/direction",
+      "Tooltip": "Hear the other PC here, send this PC there, or turn it off",
+      "Controllers": [
+        "Keypad"
+      ],
+      "DisableAutomaticStates": true,
+      "States": [
+        {
+          "Image": "imgs/keys/direction-off",
+          "TitleAlignment": "bottom"
+        },
+        {
+          "Image": "imgs/keys/direction-on",
+          "TitleAlignment": "bottom"
+        }
+      ]
+    },
+    {
+      "Name": "Mute",
+      "UUID": "com.trovul.streamdeck.mute",
+      "Icon": "imgs/actions/mute",
+      "Tooltip": "Mute or unmute the master, the other PC's sound or an app, on either PC",
+      "Controllers": [
+        "Keypad"
+      ],
+      "DisableAutomaticStates": true,
+      "States": [
+        {
+          "Image": "imgs/keys/sound-on",
+          "TitleAlignment": "bottom"
+        },
+        {
+          "Image": "imgs/keys/sound-muted",
+          "TitleAlignment": "bottom"
+        }
+      ]
+    },
+    {
+      "Name": "Volume",
+      "UUID": "com.trovul.streamdeck.volume",
+      "Icon": "imgs/actions/volume",
+      "Tooltip": "Turn to change the volume, press to mute (Stream Deck +)",
+      "Controllers": [
+        "Encoder",
+        "Keypad"
+      ],
+      "Encoder": {
+        "layout": "$B1",
+        "TriggerDescription": {
+          "Rotate": "Volume",
+          "Push": "Mute"
+        }
+      },
+      "States": [
+        {
+          "Image": "imgs/keys/sound-on",
+          "TitleAlignment": "bottom"
+        }
+      ]
+    },
+    {
+      "Name": "Follow the pointer",
+      "UUID": "com.trovul.streamdeck.follow",
+      "Icon": "imgs/actions/follow",
+      "Tooltip": "In the headset, the PC you're using is louder",
+      "Controllers": [
+        "Keypad"
+      ],
+      "DisableAutomaticStates": true,
+      "States": [
+        {
+          "Image": "imgs/keys/follow-off",
+          "TitleAlignment": "bottom"
+        },
+        {
+          "Image": "imgs/keys/follow-on",
+          "TitleAlignment": "bottom"
+        }
+      ]
+    }
+  ]
+}

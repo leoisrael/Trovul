@@ -1,0 +1,34 @@
+<svg width="512" height="512" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <!-- Fundo transparente -->
+    <!-- Outer ring - Blue -->
+    <path
+        d="M75 20 A35 35 0 0 1 75 80"
+        fill="none"
+        stroke="#4a9eff"
+        stroke-width="8"
+        stroke-linecap="round"
+    />
+    <!-- Inner ring - Blue dimmer -->
+    <path
+        d="M25 80 A35 35 0 0 1 25 20"
+        fill="none"
+        stroke="#4a9eff"
+        stroke-opacity="0.5"
+        stroke-width="8"
+        stroke-linecap="round"
+    />
+    <!-- Center circles -->
+    <circle
+        cx="40"
+        cy="35"
+        r="8"
+        fill="#4a9eff"
+        fill-opacity="0.6"
+    />
+    <circle
+        cx="60"
+        cy="65"
+        r="8"
+        fill="#4a9eff"
+    />
+</svg>

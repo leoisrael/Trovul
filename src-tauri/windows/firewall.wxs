@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Trovul - MSI firewall rule (linked through bundle.windows.wix in tauri.conf.json).
+
+     Trovul has to receive discovery broadcasts, the control link and audio from
+     the other PC. Without a rule, Windows asks on first launch, and "Cancel" on
+     that prompt leaves block rules that beat any allow rule and silently break
+     discovery. So on install we remove the block rules for our exe and add our
+     own rule allowing it on private and domain networks. Allow rules the user
+     made (e.g. for public networks) are kept. Uninstall removes every rule for
+     the exe. -->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <!-- Referenced from tauri.conf.json (componentRefs) so this fragment is linked. -->
+    <DirectoryRef Id="INSTALLDIR">
+      <Component Id="FirewallRules" Guid="*">
+        <RegistryValue Root="HKLM" Key="Software\Trovul\Trovul" Name="FirewallRules" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+
+    <!-- The input service (src/input_service.rs): keyboard & mouse sharing in
+         admin windows, UAC prompts and on the lock screen. Registered stopped
+         and on demand; the signed-in user may start and stop it (the app does
+         when its option is turned on or off). ServiceControl stops it before
+         files are replaced (also when an older version is removed during an
+         upgrade) and deletes it on uninstall. -->
+    <DirectoryRef Id="INSTALLDIR">
+      <Component Id="InputService" Guid="*">
+        <RegistryValue Root="HKLM" Key="Software\Trovul\Trovul" Name="InputService" Type="integer" Value="1" KeyPath="yes" />
+        <ServiceControl Id="TrovulInputControl" Name="TrovulInput" Stop="both" Remove="uninstall" Wait="yes" />
+      </Component>
+    </DirectoryRef>
+
+    <!-- New-Service on a fresh install, else point the existing one at this
+         exe. The service DACL is the default plus start/stop for interactive
+         users (RP/WP on IU). -->
+    <SetProperty Id="TrovulInputRegister" Before="TrovulInputRegister" Sequence="execute"
+                 Value="&quot;[System64Folder]WindowsPowerShell\v1.0\powershell.exe&quot; -NoProfile -NonInteractive -ExecutionPolicy Bypass -Command &quot;$name = 'TrovulInput'; $q = [char]34; $bin = $q + '[INSTALLDIR]trovul.exe' + $q + ' --input-service'; if (Get-Service $name -ErrorAction SilentlyContinue) { Set-ItemProperty -Path ('HKLM:\SYSTEM\CurrentControlSet\Services\' + $name) -Name ImagePath -Value $bin; Set-Service $name -StartupType Manual } else { New-Service -Name $name -BinaryPathName $bin -StartupType Manual -DisplayName 'Trovul input helper' -Description 'Lets Trovul keyboard and mouse sharing work in admin windows, UAC prompts and on the lock screen. Only runs while that option is on in Trovul.' | Out-Null }; sc.exe sdset $name 'D:(A;;CCLCSWRPWPDTLOCRRC;;;SY)(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;BA)(A;;CCLCSWRPWPLOCRRC;;;IU)(A;;CCLCSWLOCRRC;;;SU)' | Out-Null&quot;" />
+    <CustomAction Id="TrovulInputRegister" BinaryKey="WixCA" DllEntry="WixQuietExec64"
+                  Execute="deferred" Impersonate="no" Return="ignore" />
+
+    <!-- netsh can't tell block rules from allow rules, PowerShell can. Our rule is
+         removed first so reinstalls and upgrades don't stack copies of it.
+         [#Path] (the main exe) is blank while its component is being removed, so
+         paths are built from INSTALLDIR. -->
+    <SetProperty Id="TrovulFirewallAllow" Before="TrovulFirewallAllow" Sequence="execute"
+                 Value="&quot;[System64Folder]WindowsPowerShell\v1.0\powershell.exe&quot; -NoProfile -NonInteractive -ExecutionPolicy Bypass -Command &quot;$exe = '[INSTALLDIR]trovul.exe'; $name = 'Trovul (private networks)'; Get-NetFirewallRule -DisplayName $name -ErrorAction SilentlyContinue | Remove-NetFirewallRule; Get-NetFirewallApplicationFilter -Program $exe -ErrorAction SilentlyContinue | Get-NetFirewallRule | Where-Object Action -eq Block | Remove-NetFirewallRule; New-NetFirewallRule -DisplayName $name -Direction Inbound -Action Allow -Program $exe -Profile Private,Domain | Out-Null&quot;" />
+    <CustomAction Id="TrovulFirewallAllow" BinaryKey="WixCA" DllEntry="WixQuietExec64"
+                  Execute="deferred" Impersonate="no" Return="ignore" />
+
+    <SetProperty Id="TrovulFirewallRemove" Before="TrovulFirewallRemove" Sequence="execute"
+                 Value="&quot;[System64Folder]netsh.exe&quot; advfirewall firewall delete rule name=all program=&quot;[INSTALLDIR]trovul.exe&quot;" />
+    <CustomAction Id="TrovulFirewallRemove" BinaryKey="WixCA" DllEntry="WixQuietExec64"
+                  Execute="deferred" Impersonate="no" Return="ignore" />
+
+    <!-- Updates over the link (src/update.rs): keep a copy of this installer so
+         this PC can hand it to the linked PC. The folder is locked to SYSTEM and
+         Administrators (standard users can create files under ProgramData, and
+         the app refuses to share a file they own). -->
+    <SetProperty Id="TrovulKeepInstaller" Before="TrovulKeepInstaller" Sequence="execute"
+                 Value="&quot;[System64Folder]WindowsPowerShell\v1.0\powershell.exe&quot; -NoProfile -NonInteractive -ExecutionPolicy Bypass -Command &quot;$dir = '[CommonAppDataFolder]Trovul\updates'; $name = 'Trovul_[ProductVersion].msi'; New-Item -ItemType Directory -Force -Path $dir | Out-Null; icacls $dir /inheritance:r /grant:r '*S-1-5-18:(OI)(CI)F' '*S-1-5-32-544:(OI)(CI)F' '*S-1-5-32-545:(OI)(CI)RX' | Out-Null; Copy-Item -LiteralPath '[OriginalDatabase]' -Destination (Join-Path $dir $name) -Force; Get-ChildItem -LiteralPath $dir -Filter '*.msi' | Where-Object Name -ne $name | Remove-Item -Force&quot;" />
+    <CustomAction Id="TrovulKeepInstaller" BinaryKey="WixCA" DllEntry="WixQuietExec64"
+                  Execute="deferred" Impersonate="no" Return="ignore" />
+
+    <SetProperty Id="TrovulForgetInstaller" Before="TrovulForgetInstaller" Sequence="execute"
+                 Value="&quot;[System64Folder]WindowsPowerShell\v1.0\powershell.exe&quot; -NoProfile -NonInteractive -ExecutionPolicy Bypass -Command &quot;Remove-Item -LiteralPath '[CommonAppDataFolder]Trovul' -Recurse -Force -ErrorAction SilentlyContinue&quot;" />
+    <CustomAction Id="TrovulForgetInstaller" BinaryKey="WixCA" DllEntry="WixQuietExec64"
+                  Execute="deferred" Impersonate="no" Return="ignore" />
+
+    <InstallExecuteSequence>
+      <Custom Action="TrovulFirewallAllow" After="InstallFiles">NOT REMOVE</Custom>
+      <Custom Action="TrovulKeepInstaller" After="TrovulFirewallAllow">NOT REMOVE</Custom>
+      <Custom Action="TrovulInputRegister" After="TrovulKeepInstaller">NOT REMOVE</Custom>
+      <!-- A major upgrade removes the old version first; keep the rules then. -->
+      <Custom Action="TrovulFirewallRemove" Before="RemoveFiles">REMOVE = "ALL" AND NOT UPGRADINGPRODUCTCODE</Custom>
+      <Custom Action="TrovulForgetInstaller" After="TrovulFirewallRemove">REMOVE = "ALL" AND NOT UPGRADINGPRODUCTCODE</Custom>
+    </InstallExecuteSequence>
+  </Fragment>
+</Wix>

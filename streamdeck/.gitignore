@@ -1,0 +1,4 @@
+node_modules/
+dist/
+com.trovul.streamdeck.sdPlugin/bin/
+com.trovul.streamdeck.sdPlugin/logs/

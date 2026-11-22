@@ -1,0 +1,52 @@
+name: release
+
+# Builds the Windows installer when a vX.Y.Z tag is pushed and attaches the
+# .msi/.exe to a GitHub Release. This is what lets users actually install
+# Trovul without compiling from source.
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-pc-windows-msvc
+
+      - name: Cache cargo registry / target
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      - name: Install JS deps
+        run: npm ci
+
+      - name: Build Tauri bundle
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: "Trovul ${{ github.ref_name }}"
+          releaseBody: |
+            See CHANGELOG for details.
+
+            **Install:** download the `.msi` below and run it.
+          releaseDraft: true
+          prerelease: false

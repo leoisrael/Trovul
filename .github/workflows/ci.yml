@@ -1,0 +1,51 @@
+name: ci
+
+# Formatting, lints, unit tests and the frontend build on every push to main
+# and every pull request. Runs on Windows because the backend calls WASAPI/COM
+# directly. (The hardware smoke test is #[ignore]d — CI has no audio devices.)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - name: Cache cargo registry / target
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      - name: Install JS deps
+        run: npm ci
+
+      # Also produces ../dist, which the Tauri build script expects to exist.
+      - name: Frontend (tsc + vite build)
+        run: npm run build
+
+      - name: rustfmt
+        working-directory: src-tauri
+        run: cargo fmt --check
+
+      - name: clippy
+        working-directory: src-tauri
+        run: cargo clippy --locked --all-targets -- -D warnings
+
+      - name: Tests
+        working-directory: src-tauri
+        run: cargo test --locked

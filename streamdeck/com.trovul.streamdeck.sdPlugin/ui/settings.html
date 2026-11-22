@@ -1,0 +1,201 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Trovul</title>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      body {
+        margin: 0;
+        padding: 8px 10px 12px;
+        background: #2d2d2d;
+        color: #d8d8d8;
+        font: 12px/1.4 "Segoe UI", system-ui, sans-serif;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 96px 1fr;
+        align-items: center;
+        gap: 8px;
+        margin: 8px 0;
+      }
+      label {
+        color: #9a9a9a;
+      }
+      select,
+      input[type="text"] {
+        width: 100%;
+        box-sizing: border-box;
+        height: 26px;
+        padding: 0 6px;
+        border: 1px solid #454545;
+        border-radius: 3px;
+        background: #3d3d3d;
+        color: #fff;
+        font: inherit;
+      }
+      .check {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .status {
+        margin: 4px 0 10px;
+        padding: 6px 8px;
+        border-radius: 4px;
+        background: #3a2f18;
+        color: #f5c16c;
+      }
+      .status.ok {
+        background: #1d3327;
+        color: #7ee2a8;
+      }
+      .hint {
+        margin: 2px 0 0 104px;
+        color: #8a8a8a;
+        font-size: 11px;
+      }
+      [hidden] {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="status" class="status">Connecting to Trovul…</div>
+
+    <div id="scene-fields" hidden>
+      <div class="row">
+        <label for="scene">Scene</label>
+        <select id="scene"></select>
+      </div>
+      <p class="hint" id="scene-hint">Save scenes in Trovul’s Mixer (“Save mix”).</p>
+    </div>
+
+    <div id="direction-fields" hidden>
+      <div class="row">
+        <label for="direction">Each press</label>
+        <select id="direction">
+          <option value="cycle">Hear → Send → Off</option>
+          <option value="receive">Hear the other PC (again: off)</option>
+          <option value="send">Send this PC (again: off)</option>
+          <option value="off">Off</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="target-fields" hidden>
+      <div class="row">
+        <label for="target">Controls</label>
+        <select id="target">
+          <option value="master">Master volume</option>
+          <option value="incoming">The other PC’s sound here</option>
+          <option value="app">An app</option>
+        </select>
+      </div>
+      <div class="row" id="name-row" hidden>
+        <label for="name">App name</label>
+        <input id="name" type="text" placeholder="Discord, Spotify, chrome…" />
+      </div>
+      <p class="hint" id="name-hint" hidden>As Trovul’s Mixer shows it.</p>
+      <div class="row" id="remote-row">
+        <label>On</label>
+        <span class="check"><input id="remote" type="checkbox" /> <label for="remote" id="remote-label">The other PC</label></span>
+      </div>
+    </div>
+
+    <script>
+      // Stream Deck calls this when the property inspector opens.
+      let socket;
+      let uuid;
+      let action;
+      let settings = {};
+
+      const $ = (id) => document.getElementById(id);
+
+      function save() {
+        socket.send(JSON.stringify({ event: "setSettings", context: uuid, payload: settings }));
+      }
+
+      function showFields() {
+        $("scene-fields").hidden = action !== "com.trovul.streamdeck.scene";
+        $("direction-fields").hidden = action !== "com.trovul.streamdeck.direction";
+        const targeted = action === "com.trovul.streamdeck.mute" || action === "com.trovul.streamdeck.volume";
+        $("target-fields").hidden = !targeted;
+        if (targeted) {
+          const target = settings.target || "master";
+          $("target").value = target;
+          $("name").value = settings.name || "";
+          $("remote").checked = !!settings.remote;
+          $("name-row").hidden = target !== "app";
+          $("name-hint").hidden = target !== "app";
+          // The other PC's incoming sound is only set on that PC.
+          $("remote-row").hidden = target === "incoming";
+        }
+        if (action === "com.trovul.streamdeck.direction") $("direction").value = settings.direction || "cycle";
+      }
+
+      function fromPlugin(info) {
+        const status = $("status");
+        status.className = info.connected ? "status ok" : "status";
+        status.textContent = info.connected
+          ? `Connected to Trovul${info.peer ? ` · linked to ${info.peer}` : ""}`
+          : info.problem || "Trovul isn’t reachable";
+        if (info.peer) $("remote-label").textContent = info.peer;
+        const scene = $("scene");
+        scene.innerHTML = "";
+        const placeholder = new Option(info.scenes.length ? "Choose a scene" : "No scenes yet", "");
+        scene.add(placeholder);
+        for (const s of info.scenes) scene.add(new Option(s.name, s.id));
+        scene.value = settings.sceneId || "";
+        $("scene-hint").hidden = info.scenes.length > 0;
+      }
+
+      function connectElgatoStreamDeckSocket(port, propertyInspectorUuid, registerEvent, info, actionInfo) {
+        uuid = propertyInspectorUuid;
+        const parsed = JSON.parse(actionInfo);
+        action = parsed.action;
+        settings = parsed.payload.settings || {};
+        showFields();
+        socket = new WebSocket(`ws://127.0.0.1:${port}`);
+        socket.onopen = () => {
+          socket.send(JSON.stringify({ event: registerEvent, uuid }));
+          // Ask the plugin for the scenes and the connection state.
+          socket.send(JSON.stringify({ event: "sendToPlugin", action, context: uuid, payload: { hello: true } }));
+        };
+        socket.onmessage = (e) => {
+          const message = JSON.parse(e.data);
+          if (message.event === "sendToPropertyInspector") fromPlugin(message.payload);
+          if (message.event === "didReceiveSettings") {
+            settings = message.payload.settings || {};
+            showFields();
+          }
+        };
+      }
+
+      $("scene").addEventListener("change", (e) => {
+        settings.sceneId = e.target.value || undefined;
+        save();
+      });
+      $("direction").addEventListener("change", (e) => {
+        settings.direction = e.target.value;
+        save();
+      });
+      $("target").addEventListener("change", (e) => {
+        settings.target = e.target.value;
+        if (settings.target === "incoming") settings.remote = false;
+        showFields();
+        save();
+      });
+      $("name").addEventListener("change", (e) => {
+        settings.name = e.target.value.trim();
+        save();
+      });
+      $("remote").addEventListener("change", (e) => {
+        settings.remote = e.target.checked;
+        save();
+      });
+    </script>
+  </body>
+</html>

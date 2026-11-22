@@ -1,0 +1,102 @@
+[package]
+name = "trovul"
+version = "0.7.10"
+description = "Real-time audio streaming between PCs. Zero cables, zero extra hardware."
+authors = ["Israel"]
+edition = "2021"
+license-file = "../LICENSE"
+repository = "https://github.com/leoisrael/Trovul"
+homepage = "https://trovul.com"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+name = "trovul_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon"] }
+tauri-plugin-opener = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Async runtime for networking
+tokio = { version = "1", features = ["full"] }
+
+# Windows API bindings (Core Audio, COM, process info, GDI icon extraction)
+windows = { version = "0.58", features = [
+    "implement",
+    "Win32_System_Registry",
+    "Win32_Foundation",
+    "Win32_UI_WindowsAndMessaging",
+    "Win32_UI_Input_KeyboardAndMouse",
+    "Win32_Graphics_Gdi",
+    "Win32_System_Threading",
+    "Win32_System_Com",
+    "Win32_System_Com_StructuredStorage",
+    "Win32_Media_Audio",
+    "Win32_Media_Audio_Endpoints",
+    "Win32_Media_KernelStreaming",
+    "Win32_System_ProcessStatus",
+    "Win32_UI_Shell_PropertiesSystem",
+    "Win32_UI_Shell",
+    "Win32_System_Variant",
+    "Win32_Devices_FunctionDiscovery",
+    "Win32_NetworkManagement_IpHelper",
+    "Win32_NetworkManagement_Ndis",
+    "Win32_Networking_WinSock",
+    "Win32_Networking_NetworkListManager",
+    "Win32_Devices_Display",
+    "Win32_UI_HiDpi",
+    "Win32_System_LibraryLoader",
+    "Win32_Security",
+    "Win32_Security_Authorization",
+    "Win32_System_WinRT",
+    "Win32_System_DataExchange",
+    "Win32_System_Memory",
+    "Win32_System_Ole",
+    "Win32_System_Services",
+    "Win32_System_RemoteDesktop",
+    "Win32_System_Pipes",
+    "Win32_System_StationsAndDesktops",
+    "Win32_Storage_FileSystem",
+    "Win32_System_IO",
+] }
+
+# The implement macro (COM objects: audio/app_capture.rs) expands to windows_core paths.
+windows-core = "0.58"
+
+# Network utilities
+hostname = "0.4"
+local-ip-address = "0.6"
+socket2 = "0.5"
+
+# Logging (env_logger removed — file logging is provided by tauri-plugin-log below)
+log = "0.4"
+
+# Audio capture and playback
+cpal = "0.15"
+ringbuf = "0.4"
+
+# Base64 encoding for icons
+base64 = "0.22"
+
+# OS random numbers for session ids and API tokens
+getrandom = "0.3"
+sha2 = "0.10"
+
+# Image processing for icon conversion
+image = { version = "0.25", default-features = false, features = ["png"] }
+
+# Companion API WebSocket server
+tokio-tungstenite = "0.21"
+futures-util = "0.3"
+tauri-plugin-notification = "2.3.3"
+tauri-plugin-autostart = "2.5.1"
+
+# Distribution-quality plugins
+tauri-plugin-single-instance = "2"
+tauri-plugin-log = "2"
