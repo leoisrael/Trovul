@@ -10,7 +10,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/leoisrael/Trovul/releases">Download builds</a> ·
+  <a href="https://github.com/leoisrael/Trovul/releases/latest">Download for Windows</a> ·
+  <a href="https://trovul.com/#film">Watch the film</a> ·
   <a href="https://trovul.com">Website</a> ·
   <a href="#build-from-source">Build from source</a> ·
   <a href="CONTRIBUTING.md">Contribute</a>
@@ -36,6 +37,13 @@
 > [contributor agreement](CONTRIBUTOR-LICENSE-AGREEMENT.md) before using or
 > contributing to the project.
 
+<p align="center">
+  <a href="https://trovul.com/#film"><img src="docs/media/trovul-tour-poster.webp" width="820" alt="Watch the Trovul product film"></a><br>
+  <a href="https://trovul.com/#film"><strong>▶ Watch Trovul in action</strong></a>
+</p>
+
+<p align="center"><sub>Free to use · Experimental and in active development · Windows 10 &amp; 11</sub></p>
+
 ---
 
 ## The dual-PC setup, without the pile of hardware
@@ -50,7 +58,7 @@ then decide where sound goes, control every app, and move naturally between
 screens.
 
 <p align="center">
-  <img src="docs/screenshots/home-receiving.png" alt="Trovul receiving audio from another PC" width="820">
+  <img src="docs/media/mixer.webp" alt="Trovul's dual-PC mixer with audio controls for both computers" width="820">
 </p>
 
 ## What you get
@@ -72,11 +80,13 @@ screens.
 
 | Mixer | Keyboard & mouse |
 |---|---|
-| ![Trovul mixer showing controls for both PCs](docs/screenshots/mixer.png) | ![Trovul screen arrangement editor](docs/screenshots/keyboard-mouse.png) |
+| ![Trovul mixer showing controls for both PCs](docs/media/mixer.webp) | ![Trovul screen arrangement editor](docs/media/keyboard-mouse.webp) |
 
-| Tray mixer | Connection settings |
+| Stream mix | Tray mixer |
 |---|---|
-| ![Trovul tray mixer](docs/screenshots/tray-mixer.png) | ![Trovul connection settings](docs/screenshots/settings.png) |
+| ![Choosing which apps to send to the other PC](docs/media/mixer-apps.webp) | ![Trovul tray mixer](docs/media/flyout.webp) |
+
+<sub>Product visuals show an illustrative setup.</sub>
 
 ## How it works
 
@@ -141,10 +151,11 @@ The detailed technical map lives in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 
 ### Use a build
 
-Historical installers and test builds are available on the
-[Releases page](https://github.com/leoisrael/Trovul/releases). Install the same
+Get the latest experimental Windows installer from the
+[Releases page](https://github.com/leoisrael/Trovul/releases/latest). Install the same
 build on both Windows PCs, keep them on the same trusted local network, and
-approve the pairing from either machine.
+approve the pairing from either machine. The current installer is unsigned, so
+Windows SmartScreen may show a warning. Read the release notes for its provenance.
 
 ### Build from source
 
@@ -217,3 +228,4 @@ are not granted by the code license.
   <strong>One desk. Two PCs. No extra hardware.</strong><br>
   Built with Rust, Tauri, React, and a stubborn dislike of cable clutter.
 </p>
+
